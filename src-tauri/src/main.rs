@@ -3,6 +3,7 @@
     windows_subsystem = "windows"
 )]
 
+mod sys_info;
 mod tauri_commands;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
