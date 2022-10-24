@@ -1,49 +1,53 @@
 <script lang="ts">
-import Sidebar from "./lib/Sidebar/Sidebar.svelte";
-let sidebarData = [
-  {
-    title: "CPU",
-    link: "/cpu",
-    id: "cpu"
-  },
-  {
-    title: "Memory",
-    link: "/memory",
-    id: "memory"
-  },
-  {
-    title: "Disks",
-    link: "/disks",
-    id: "disks"
-  },
-  {
-    title: "Devices",
-    link: "/devices",
-    id: "devices"
-  },
-  {
-    title: "Temperature",
-    link: "/temperature",
-    id: "temperature"
-  }
-];
+  import MainContent from './lib/MainContent/MainContent.svelte';
+  import Sidebar from './lib/Sidebar/Sidebar.svelte';
+  import { InfoCategory } from './utils/InfoCategory';
+  let sidebarData = [
+    {
+      title: 'CPU',
+      link: '/cpu',
+      id: InfoCategory.CPU,
+    },
+    {
+      title: 'Memory',
+      link: '/memory',
+      id: InfoCategory.MEMORY,
+    },
+    {
+      title: 'Disks',
+      link: '/disks',
+      id: InfoCategory.DISKS,
+    },
+    {
+      title: 'Devices',
+      link: '/devices',
+      id: InfoCategory.DEVICES,
+    },
+    {
+      title: 'Temperature',
+      link: '/temperature',
+      id: InfoCategory.TEMPERATURE,
+    },
+  ];
 
-let selected = sidebarData[0];
+  let selected = sidebarData[0];
 
-const onSelectItem=(item)=>{
-  selected = item;
-}
+  const onSelectItem = (item) => {
+    selected = item;
+  };
 </script>
 
 <main class="container">
   <div class="main__wrapper">
-    <Sidebar onSelectItem={onSelectItem} selected={selected} sidebarData={sidebarData}/>
-    <div class="data__container"> </div>
+    <Sidebar {onSelectItem} {selected} {sidebarData} />
+    <div class="data__container">
+      <MainContent selectedItem={selected} />
+    </div>
   </div>
 </main>
 
 <style>
-  .main__wrapper{
+  .main__wrapper {
     display: grid;
     grid-template-columns: 20% 80%;
     gap: 10px;
@@ -51,8 +55,10 @@ const onSelectItem=(item)=>{
     align-content: center;
     place-items: center;
     place-content: center;
+    height: 100%;
   }
-  .data__container{
+  .data__container {
     width: 100%;
+    height: 100%;
   }
 </style>
