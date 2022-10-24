@@ -1,39 +1,58 @@
 <script lang="ts">
-  import Greet from './lib/Greet.svelte'
+import Sidebar from "./lib/Sidebar/Sidebar.svelte";
+let sidebarData = [
+  {
+    title: "CPU",
+    link: "/cpu",
+    id: "cpu"
+  },
+  {
+    title: "Memory",
+    link: "/memory",
+    id: "memory"
+  },
+  {
+    title: "Disks",
+    link: "/disks",
+    id: "disks"
+  },
+  {
+    title: "Devices",
+    link: "/devices",
+    id: "devices"
+  },
+  {
+    title: "Temperature",
+    link: "/temperature",
+    id: "temperature"
+  }
+];
+
+let selected = sidebarData[0];
+
+const onSelectItem=(item)=>{
+  selected = item;
+}
 </script>
 
 <main class="container">
-  <h1>Welcome to Tauri!</h1>
-
-  <div class="row">
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
-    </a>
-    <a href="https://tauri.app" target="_blank">
-      <img src="/tauri.svg" class="logo tauri" alt="Tauri Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank">
-      <img src="/svelte.svg" class="logo svelte" alt="Svelte Logo" />
-    </a>
+  <div class="main__wrapper">
+    <Sidebar onSelectItem={onSelectItem} selected={selected} sidebarData={sidebarData}/>
+    <div class="data__container"> </div>
   </div>
-
-  <p>
-    Click on the Tauri, Vite, and Svelte logos to learn more.
-  </p>
-
-  <div class="row">
-    <Greet />
-  </div>
-
-
 </main>
 
 <style>
-  .logo.vite:hover {
-    filter: drop-shadow(0 0 2em #747bff);
+  .main__wrapper{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    gap: 10px;
+    align-items: center;
+    align-content: center;
+    place-items: center;
+    place-content: center;
   }
-
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00);
+  .data__container{
+    width: 100%;
   }
 </style>
