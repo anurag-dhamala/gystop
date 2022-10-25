@@ -66,5 +66,6 @@ pub fn get_global_info() -> GlobalInfo {
     global_info.set_uptime(sys_instance.uptime());
     global_info.set_boot_time(sys_instance.boot_time());
     global_info.set_os_name(sys_instance.name());
+    global_info.set_long_os_version(sys_instance.long_os_version());
     global_info
 }
