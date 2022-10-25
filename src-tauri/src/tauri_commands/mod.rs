@@ -1,17 +1,18 @@
 use crate::sys_info::cpu::SingleCpu;
 use crate::sys_info::disks::Disk;
+use crate::sys_info::GlobalInfo;
 use sysinfo::{CpuExt, DiskExt, System, SystemExt};
 
 //private functions to this module
 fn get_sys_instance() -> System {
-    let sys = System::new();
+    let mut sys = System::new();
+    sys.refresh_all();
     sys
 }
 
 #[tauri::command]
 pub fn get_cpu() -> Vec<SingleCpu> {
-    let mut sys_instance = get_sys_instance();
-    sys_instance.refresh_cpu();
+    let sys_instance = get_sys_instance();
     let mut vec: Vec<SingleCpu> = Vec::new();
     for cpu in sys_instance.cpus() {
         let mut single_cpu = SingleCpu::new();
@@ -28,14 +29,13 @@ pub fn get_cpu() -> Vec<SingleCpu> {
 }
 
 #[tauri::command]
-pub fn get_memory() {}
+pub fn get_memory() {
+    let system_instance = get_sys_instance();
+}
 
 #[tauri::command]
 pub fn get_disks() -> Vec<Disk> {
-    let mut sys_instance = get_sys_instance();
-    sys_instance.refresh_disks();
-    sys_instance.refresh_disks_list();
-
+    let sys_instance = get_sys_instance();
     let mut vec: Vec<Disk> = Vec::new();
     for disk in sys_instance.disks() {
         let mut single_disk = Disk::new();
@@ -55,3 +55,16 @@ pub fn get_devices() {}
 
 #[tauri::command]
 pub fn get_temperature() {}
+
+#[tauri::command]
+pub fn get_global_info() -> GlobalInfo {
+    let sys_instance = get_sys_instance();
+    let mut global_info = GlobalInfo::new();
+    global_info.set_boot_time(sys_instance.boot_time());
+    global_info.set_host_name(sys_instance.host_name());
+    global_info.set_kernel_version(sys_instance.kernel_version());
+    global_info.set_uptime(sys_instance.uptime());
+    global_info.set_boot_time(sys_instance.boot_time());
+    global_info.set_os_name(sys_instance.name());
+    global_info
+}
