@@ -1,4 +1,4 @@
-use serde::{Serialze, Deserialize};
+use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Memory {
