@@ -2,6 +2,7 @@ use crate::sys_info::cpu::SingleCpu;
 use crate::sys_info::disks::Disk;
 use crate::sys_info::GlobalInfo;
 use sysinfo::{CpuExt, DiskExt, System, SystemExt};
+use crate::sys_info::memory::Memory;
 
 //private functions to this module
 fn get_sys_instance() -> System {
@@ -29,8 +30,15 @@ pub fn get_cpu() -> Vec<SingleCpu> {
 }
 
 #[tauri::command]
-pub fn get_memory() {
+pub fn get_memory() -> Memory{
     let system_instance = get_sys_instance();
+    let mut memory_instance = Memory::new();
+    memory_instance.set_total_mem(system_instance.total_memory());
+    memory_instance.set_total_swap(system_instance.total_swap());
+    memory_instance.set_total_avail(system_instance.free_memory());
+    memory_instance.set_free_swap(system_instance.free_swap());
+    memory_instance.set_used_swap(system_instance.total_swap());
+    memory_instance
 }
 
 #[tauri::command]
