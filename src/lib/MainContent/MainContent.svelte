@@ -11,7 +11,7 @@
 {:else if selectedItem === InfoCategory.DEVICES}
   <Devices />
 {:else}
-  <div />
+  <div></div>
 {/if}
 
-<div />
+<div></div>
