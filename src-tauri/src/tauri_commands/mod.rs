@@ -1,7 +1,8 @@
 use crate::sys_info::cpu::SingleCpu;
 use crate::sys_info::disks::Disk;
 use crate::sys_info::GlobalInfo;
-use sysinfo::{CpuExt, DiskExt, System, SystemExt};
+use crate::sys_info::networks::Networks;
+use sysinfo::{ComponentExt, CpuExt, DiskExt, NetworkExt, NetworksExt, System, SystemExt};
 use crate::sys_info::memory::Memory;
 
 //private functions to this module
@@ -24,7 +25,7 @@ pub fn get_cpu() -> Vec<SingleCpu> {
         single_cpu.set_mhz(cpu.frequency());
         vec.push(single_cpu);
     }
-    std::thread::sleep(std::time::Duration::from_millis(500));
+    // std::thread::sleep(std::time::Duration::from_millis(500));
     println!("{:#?}", vec);
     vec
 }
@@ -65,6 +66,23 @@ pub fn get_devices() {}
 pub fn get_temperature() {}
 
 #[tauri::command]
+pub fn get_network_info() -> Vec<Networks> {
+    let sys_instance = get_sys_instance();
+    let mut  network_vec : Vec<Networks> = Vec::new();
+    for (&key, network) in sys_instance.networks() {
+        let mut network_info = Networks::new();
+        network_info.set_total_received(network.total_received());
+        network_info.set_errors_on_received(network.errors_on_received());
+        network_info.set_total_transmitted(network.total_transmitted());
+        network_info.set_errors_on_transmitted(network.errors_on_transmitted());
+        network_info.set_packets_received(network.packets_received());
+        network_info.set_packets_transmitted(network.packets_transmitted());
+        network_vec.push(network_info);
+    }
+    network_vec
+}
+
+#[tauri::command]
 pub fn get_global_info() -> GlobalInfo {
     let sys_instance = get_sys_instance();
     let mut global_info = GlobalInfo::new();
@@ -75,5 +93,6 @@ pub fn get_global_info() -> GlobalInfo {
     global_info.set_boot_time(sys_instance.boot_time());
     global_info.set_os_name(sys_instance.name());
     global_info.set_long_os_version(sys_instance.long_os_version());
+    println!("{:#?}", global_info);
     global_info
 }
