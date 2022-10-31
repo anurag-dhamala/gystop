@@ -4,6 +4,7 @@ pub mod disks;
 pub mod memory;
 pub mod processes;
 pub mod temperature;
+pub mod networks;
 
 use serde::{Deserialize, Serialize};
 
